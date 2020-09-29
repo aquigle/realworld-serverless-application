@@ -4,6 +4,10 @@ Description: >-
   This template creates IAM roles and use them to setup CD pipeline for the static website.
 
 Parameters:
+  GitHubBranch:
+    Type: String
+    Description: GitHub repo branch name. It defaults to master if not specified.
+    Default: master
   GitHubOAuthTokenSecretId:
     Type: String
     Description: The AWS Secrets Manager Secret Id that stores Github OAuth token.
@@ -28,6 +32,7 @@ Resources:
         ApplicationId: arn:aws:serverlessrepo:us-east-1:646794253159:applications/aws-sam-codepipeline-cd
         SemanticVersion: 0.1.3
       Parameters:
+        GitHubBranch: !Ref GitHubBranch
         GitHubOAuthToken: !Sub '{{resolve:secretsmanager:${GitHubOAuthTokenSecretId}}}'
         GitHubOwner: !Ref GitHubOwner
         GitHubRepo: realworld-serverless-application
